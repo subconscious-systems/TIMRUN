@@ -30,10 +30,8 @@
 
 - 🔗 **Multi-hop Reasoning**: Chain complex reasoning steps across extended contexts
 - 🛠️ **End-to-End Tool Integration**: Seamlessly incorporate external tools and APIs
-- ⚡ **Optimized Inference**: Efficient sparse attention mechanisms for long sequences with intelligent KV cache pruning
 - 🎯 **Long-horizon Planning**: Handle tasks requiring extended planning and execution
-- 🔄 **Iterative Refinement**: Continuously improve solutions through feedback loops
-- 🧠 **Intelligent Orchestration**: Structure checks for tool calls and subtask pruning during inference
+- 🧠 **Generative Orchestration**: Intelligent context engineering learned by the TIM model and handled by TIMRUN with efficient KV cache pruning
 
 ## 🏗️ Architecture
 
