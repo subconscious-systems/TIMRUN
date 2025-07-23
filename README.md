@@ -85,7 +85,7 @@
 
 ```python
 client = OpenAI(
-    base_url = "https://api.subconscious.dev",
+    base_url = "https://api.subconscious.dev/v1",
     api_key = # get API KEY from https://subconscious.dev
 )
 ```
