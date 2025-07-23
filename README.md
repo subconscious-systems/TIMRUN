@@ -40,23 +40,23 @@
 │   Input Query   │───▶│              TIMRUN Engine              │
 │                 │    │                                         │
 └─────────────────┘    │  ┌─────────────────┐                    │
-                       │  │   TIM Model     │                    │
+                       │  │ Structure Check │                    │
                        │  │                 │                    │
-                       │  │  • Sparse Attn  │                    │
-                       │  │  • Multi-hop    │                    │
-                       │  │  • Token Pred   │                    │
+                       │  │ • Tool Calls    │                    │
+                       │  │ • Prunable      │                    │
+                       │  │   Subtasks      │                    │
                        │  └─────────────────┘                    │
                        │           │                             │
                        │           ▼                             │
                        │  ┌─────────────────┐                    │
-                       │  │ Structure Check │                    │
+                       │  │   TIM Model     │                    │
                        │  │                 │                    │
-                       │  │ • Tool Calls    │ ----------         │
-                       │  │ • Prunable      │          │         │
-                       │  │   Subtasks      │          │         │
-                       │  └─────────────────┘          │         │
-                       │           │                   │         │
-                       │           ▼                   ▼         │
+                       │  │  • Sparse Attn  │ ─────────────      │
+                       │  │  • Multi-hop    │             │      │
+                       │  │  • Token Pred   │             │      │
+                       │  └─────────────────┘             │      │
+                       │           │                      │      │
+                       │           ▼                      ▼      │
 ┌─────────────────┐    │  ┌─────────────────┐    ┌─────────────┐ │
 │   Tool Usage    │◀───┼──│  Tool Execution │    │ KV Cache    │ │
 │                 │    │  │                 │    │ Pruning     │ │
