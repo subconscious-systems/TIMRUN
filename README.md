@@ -132,6 +132,12 @@ resp = client.chat.completions.create(
 print(json.loads(resp.choices[0].message.content)['answer'])
 ```
 
+## 🤖 Showcase agents built with TIM
+
+- [AP CS test assistant](https://github.com/aivyngo/public-ap-csa-agent)
+- [Arxiv podcast writer - coming soon]
+- [Legal research agent - coming soon]
+
 ## 🛠️ Available Tools
 
 coming soon
