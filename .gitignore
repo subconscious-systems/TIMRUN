@@ -1,0 +1,2 @@
+# VS Code settings
+.vscode/
