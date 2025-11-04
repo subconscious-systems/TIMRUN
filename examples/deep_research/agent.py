@@ -1,44 +1,86 @@
 import json
-from openai import OpenAI
+from subconscious import Client
+from typing import Tuple, List
 
-openai_client = OpenAI(
+subconscious_client = Client(
     base_url = 'https://api.subconscious.dev/v1',
-    api_key = 'GET API KEY FROM https://subconscious.dev',
+    api_key='Get API KEY from https://subconscious.dev'  # Replace with your API key,
 )
 
-def agent(research_question):
-    response = openai_client.chat.completions.create(
-        model = 'tim-large',
-        messages = [
-            {
-                'role': 'user',
-                'content': research_question
-            }
-        ],
-        max_completion_tokens = 10000,
-        temperature = 0.7,
-        stream = True,
-        tools = [
-            {
-                'type': "web_search"
-            },
-            {
-                'type': "webpage_understanding"
-            }
-        ]
+subconscious_client.build_toolkit(
+    json.load(open('tools.json'))
+)
+
+research_question = 'How can AI be leveraged to address climate change mitigation and adaptation in a way that minimizes unintended consequences?'
+messages = [
+    {
+        "role": "system",
+        "content": "You are a research agent that uses tools to gather information and provide a comprehensive answer to complex research questions. Use the search tools to find the urls for relevant articles, then use the reader tool to read and extract key information. Finally, synthesize the information to provide a well-rounded answer."
+    },
+    {
+        "role": "user",
+        "content": f"Research Question: {research_question}"
+    }
+]
+
+def flex_deep_research():
+
+    response = subconscious_client.agent.run(messages)
+    ans_obj = json.loads(response.content)
+
+    print('### Reasoning:')
+    print(json.dumps(ans_obj, indent=2))
+
+    print('### Answer:')
+    print(ans_obj['answer'])
+
+
+def controlled_deep_research():
+    search_task = subconscious_client.create_task(
+        task_name='search',
+        tools=('SearchTool',)
     )
     
-    ans_str = ''
-    for chunk in response:
-        ans_str += chunk.choices[0].delta.content
-
-    return json.loads(ans_str)
-
-
-def main():
-    research_question = 'How can AI be leveraged to address climate change mitigation and adaptation in a way that minimizes unintended consequences?'
-    ans_obj = agent(research_question)
+    read_task = subconscious_client.create_task(
+        task_name='web_reading',
+        tools=('ReaderTool',)
+    )
     
+    summary_task = subconscious_client.create_task(
+        task_name='summarization',
+        thought='Analyze the web reading result and find out if there is any information needs further search to expand.',
+    )
+    
+    rs_task = subconscious_client.create_task(
+        task_name='research_synthesis',
+        subtasks=Tuple[read_task, summary_task]
+    )
+    
+    # rs_task_list = subconscious_client.create_task(
+    #     task_name='research_synthesis_list',
+    #     subtasks=List[rs_task]
+    # )
+    
+    # search_attempt = subconscious_client.create_task(
+    #     task_name='search_attempt',
+    #     # subtasks=Tuple[search_task, rs_task_list]
+    #     subtasks=Tuple[search_task, List[rs_task]]
+    # )
+    
+    search_attempt = subconscious_client.create_task(
+        task_name='search_attempt',
+        tools=('SearchTool',),
+        subtasks=List[rs_task]
+    )
+    
+    thread = subconscious_client.create_thread(
+        reasoning_model=List[search_attempt],
+        answer_model=str
+    )
+    
+    response = subconscious_client.agent.run(messages)
+    ans_obj = json.loads(response.content)
+
     print('### Reasoning:')
     print(json.dumps(ans_obj, indent=2))
 
@@ -47,4 +89,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # flex_deep_research()
+    controlled_deep_research()
