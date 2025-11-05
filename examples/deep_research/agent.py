@@ -4,7 +4,7 @@ from typing import Tuple, List
 
 subconscious_client = Client(
     base_url = 'https://api.subconscious.dev/v1',
-    api_key='Get API KEY from https://subconscious.dev'  # Replace with your API key,
+    api_key='Get API KEY from https://subconscious.dev',
 )
 
 subconscious_client.build_toolkit(
@@ -56,17 +56,6 @@ def controlled_deep_research():
         subtasks=Tuple[read_task, summary_task]
     )
     
-    # rs_task_list = subconscious_client.create_task(
-    #     task_name='research_synthesis_list',
-    #     subtasks=List[rs_task]
-    # )
-    
-    # search_attempt = subconscious_client.create_task(
-    #     task_name='search_attempt',
-    #     # subtasks=Tuple[search_task, rs_task_list]
-    #     subtasks=Tuple[search_task, List[rs_task]]
-    # )
-    
     search_attempt = subconscious_client.create_task(
         task_name='search_attempt',
         tools=('SearchTool',),
@@ -89,5 +78,5 @@ def controlled_deep_research():
 
 
 if __name__ == '__main__':
-    # flex_deep_research()
-    controlled_deep_research()
+    flex_deep_research()
+    # controlled_deep_research()

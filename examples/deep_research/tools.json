@@ -2,7 +2,7 @@
     {
         "type": "function",
         "name": "ReaderTool",
-        "url": "http://URL_TO_TOOL_SERVER/ENDPOINT",
+        "url": "https://URL_TO_READER_TOOL/ENDPOINT",
         "method": "POST",
         "timeout": 5,
         "description": "Read information from a webpage given a url and a goal",
@@ -25,7 +25,7 @@
     {
         "type": "function",
         "name": "SearchTool",
-        "url": "http://URL_TO_TOOL_SERVER/ENDPOINT",
+        "url": "https://URL_TO_SEARCH_TOOL/ENDPOINT",
         "method": "POST",
         "timeout": 5,
         "description": "Search on google given a query",

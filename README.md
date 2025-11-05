@@ -81,7 +81,65 @@
 
 ## 🚀 Quick Start
 
+### Subconscous Python SDK
+
+Install the package using pip:
+
+```bash
+pip install subconscious-python
+```
+
+> **Note**: The package name is `subconscious-python` but you import it as `subconscious`:
+> ```python
+> import subconscious  # Import name remains clean and simple
+> ```
+
+Run your first agent:
+```python
+from subconscious import Client
+
+# Initialize the client
+client = Client(
+    base_url="https://api.subconscious.dev/v1", # can be omitted
+    api_key="your-api-key" # get it from https://subconscious.dev
+)
+
+# Define tools
+tools = [
+    {
+        "type": "function",
+        "name": "calculator",
+        "url": "https://URL_TO_CALCULATOR_TOOL/ENDPOINT", # the server url of your own tool
+        "method": "POST",
+        "timeout": 5, # seconds
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "operation": {"type": "string"},
+                "a": {"type": "number"},
+                "b": {"type": "number"}
+            },
+            "required": ["operation", "a", "b"]
+        }
+    }
+]
+
+# Build toolkit
+client.build_toolkit(tools, agent_name="math_agent")
+
+# Run agent
+messages = [{"role": "user", "content": "What is 2 + 3?"}]
+response = client.agent.run(messages, agent_name="math_agent")
+print(response)
+```
+
+The TIM language model will call the `calculator` tool as many times as necessary, handle excepts, compute the answer, and return the result. The agent is completed with one language model API call!
+
+We also provide fine-grained control over the reasoning structure, tool use, and memory management. Check out the [deep research agent example](examples/deep_research) for more advanced usage.
+
 ### OpenAI Compatible API
+
+> Note: The OpenAI compatible API does not support fine-grained reasoning structure control. For advanced performance tuning, please use the Subconscious Python SDK.
 
 ```python
 client = OpenAI(
