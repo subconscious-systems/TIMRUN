@@ -41,7 +41,11 @@ response = client.agent.run(messages)
 # by default, agent_name="default" and thread_name="default" are used
 ```
 
-This generates very flexible deep research traces without any pre-defined control. However, in many cases, we want control for different reasons:
+This generates very flexible deep research traces without any pre-defined control as follows:
+
+<img src="img/flex_research.png" alt="Subconscious Systems" width="500" height="" style="border-radius: 12px; margin-bottom: 8px;">
+
+However, in many cases, we want control for different reasons:
 - we have specific need for the agent to use some tools in certain order
 - we want to define the recursion hierarchy to manage the context pruning strategy
 - we want to push the performance by fixing certain problem modes we found.
@@ -55,3 +59,9 @@ task = Task.create_task(
     subtasks: Optional[Type] # optional subtask structure
 )
 ```
+
+The controlled deep research agent renders reasoning trace looks like this:
+
+<img src="img/controlled_research.png" alt="Subconscious Systems" width="500" height="" style="border-radius: 12px; margin-bottom: 8px;">
+
+These visualizations are logged and accessible in our [web portal](https://subconscious.dev/platform/logs).
