@@ -54,14 +54,46 @@ As shown in [controlled_deep_research](agent.py#L38), we can define the reasonin
 ```python
 task = Task.create_task(
     name: str, # the name of the task
-    tool: Optional[str], # optional tools to use for this task
+    tool: Optional[List[str]], # optional tools to use for this task
     thought: Optional[str], # optional thought prompt to guide the model
-    subtasks: Optional[Type] # optional subtask structure
-)
+    subtasks: Optional[Type] # optional subtask structure, populate with arrayes of other tasks.
+) # creates a pydantic model
 ```
 
-The controlled deep research agent renders reasoning trace looks like this:
+Since the created tasks are pydantic models, the subtasks field can be confirgured with extreme flexibility. For example,
+```python
+subtasks_a = List[task_a]
+subtasks_b = List[
+  Union[task_b1, task_b2]
+]
+subtasks_c = Union[
+  List[task_a],
+  List[Union[task_b1, task_b2]]
+]
+...
+```
+
+The task hierarchy we designed in the example [agent](agent.py#L38) constructs the following structure:
+```
+messages
+   │
+   ▼
+[search_attempt]*  ──(SearchTool)──► candidates
+        │
+        └─► [research_synthesis]+
+               │
+               ├─► web_reading ─(ReaderTool)─► docs
+               │
+               └─► summarization ──(thought: detect gaps)─► next-queries?/final-notes
+        │
+   (if gaps) loop/refine queries and repeat
+   │
+   └─► final synthesis → answer_model: str
+
+```
+
+and the following image shows an actual reasoning flow:
 
 <img src="img/controlled_research.png" alt="Subconscious Systems" width="500" height="" style="border-radius: 12px; margin-bottom: 8px;">
 
-These visualizations are logged and accessible in our [web portal](https://subconscious.dev/platform/logs).
+All agent runs via SDK are logged and visualized in our [web portal](https://subconscious.dev/platform/logs).
